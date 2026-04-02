@@ -1,23 +1,29 @@
-const CHARSET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-function fromBase62(str) {
-    let num = 0;
-    for (let i = 0; i < str.length; i++) {
-        num = num * 62 + CHARSET.indexOf(str[i]);
-    }
-    return num;
-}
-
+// Function to match Python's deterministic LCG Shuffle using BigInt to prevent JS precision loss
 function parseKey(rawKey) {
     let cleanKey = rawKey.replace("KEY:", "").trim();
-    const [ dim, data ] = cleanKey.split("|");
+    const [ dim, seedStr ] = cleanKey.split("|");
     const [ cols, rows ] = dim.split("x").map(Number);
-    let indices = [];
-    for (let i = 0; i < data.length; i += 2) {
-        indices.push(fromBase62(data.substr(i, 2)));
+    const totalBlocks = cols * rows;
+    // 1. Python hash_str equivalent
+    let h = 5381n;
+    for (let i = 0; i < seedStr.length; i++) {
+        h = h * 33n + BigInt(seedStr.charCodeAt(i)) & 0xffffffffn;
     }
-    let rev = new Array(indices.length);
-    for (let i = 0; i < indices.length; i++) {
+    // 2. Python seeded_shuffle equivalent
+    let indices = new Array(totalBlocks);
+    for (let i = 0; i < totalBlocks; i++) indices[i] = i;
+    let rng_state = h;
+    for (let i = totalBlocks - 1; i > 0; i--) {
+        rng_state = rng_state * 1103515245n + 12345n & 0xffffffffn;
+        let r = Number(rng_state % BigInt(i + 1));
+        // Swap
+        let temp = indices[i];
+        indices[i] = indices[r];
+        indices[r] = temp;
+    }
+    // 3. Build reverse index map for unscrambling
+    let rev = new Array(totalBlocks);
+    for (let i = 0; i < totalBlocks; i++) {
         rev[indices[i]] = i;
     }
     return {
