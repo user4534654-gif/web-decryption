@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Live Video Unscrambler",
+  "version": "2.0",
+  "description": "Decrypts matrix-scrambled videos in real-time on YouTube.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "toggle-decrypt": {
+      "suggested_key": {
+        "default": "Alt+D",
+        "mac": "Alt+D"
+      },
+      "description": "Toggle video decryption on/off"
+    }
+  },
+  "host_permissions": [
+    "*://*.youtube.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": [
+        "src/overlay.js",
+        "src/renderer-webgl.js",
+        "src/renderer-2d.js",
+        "src/audio.js",
+        "src/messenger.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/*.js"],
+      "matches": ["*://*.youtube.com/*"]
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            width: 320px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .banner {
+            display: block;
+            width: 100%;
+            background: #0d0d0d;
+            border-bottom: 1px solid #333;
+        }
+        .banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+        }
+
+        .content { padding: 15px; }
+
+        h3 {
+            margin: 0 0 12px 0;
+            color: #007bff;
+            text-align: center;
+            font-size: 15px;
+        }
+        label {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 4px;
+            display: block;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 4px;
+            background: #2d2d2d;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        .hint {
+            font-size: 10px;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .btn-play { background: #28a745; color: white; }
+        .btn-play:hover { background: #218838; }
+        .btn-stop { background: #dc3545; color: white; }
+        .btn-stop:hover { background: #c82333; }
+
+        .shortcut-row {
+            text-align: center;
+            font-size: 10px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        kbd {
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 3px;
+            padding: 1px 5px;
+            font-size: 10px;
+            color: #aaa;
+        }
+
+        .status {
+            text-align: center;
+            font-size: 11px;
+            color: #ffc107;
+            margin-top: 4px;
+            min-height: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <a class="banner" href="https://github.com/drics-source/J-IU-README" target="_blank">
+        <img src="https://i.ibb.co/TDmB7g6m/logo.webp" alt="GitHub repo">
+    </a>
+
+    <div class="content">
+        <h3>🔓 Live Unscrambler</h3>
+
+        <label>Decryption Key:</label>
+        <input type="text" id="keyInput" placeholder="10x10|seed  or  10x10|seed|a">
+        <div class="hint">Formats: video only · audio only (|a) · both (…|a)</div>
+
+        <button class="btn-play" id="startBtn">▶ DECRYPT</button>
+        <button class="btn-stop" id="stopBtn">■ STOP &amp; RESTORE</button>
+
+        <div class="shortcut-row">Toggle with <kbd>Alt</kbd>+<kbd>D</kbd></div>
+
+        <div class="status" id="statusMsg"></div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
